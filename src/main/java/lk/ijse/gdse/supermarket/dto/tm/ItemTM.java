@@ -1,4 +1,4 @@
-package lk.ijse.gdse.supermarket.dto;
+package lk.ijse.gdse.supermarket.dto.tm;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ItemDto {
+public class ItemTM {
     private String itemId;
     private String itemName;
     private Integer quantity;

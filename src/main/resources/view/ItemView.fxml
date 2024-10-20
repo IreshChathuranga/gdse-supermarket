@@ -20,12 +20,12 @@
                     <children>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="160.0" prefHeight="27.2">
                             <children>
-                                <Label prefWidth="150.0" text="Item Id" HBox.hgrow="ALWAYS">
+                                <Label fx:id="lblItemId" prefWidth="150.0" text="Item Id" HBox.hgrow="ALWAYS">
                                     <font>
                                         <Font name="Calibri" size="14.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="lblItemId" layoutX="10.0" layoutY="15.0" maxWidth="1.7976931348623157E308" prefHeight="18.0" text="1" HBox.hgrow="ALWAYS">
+                                <Label fx:id="lblItem" layoutX="10.0" layoutY="15.0" maxWidth="1.7976931348623157E308" prefHeight="18.0" text="1" HBox.hgrow="ALWAYS">
                                     <font>
                                         <Font name="Calibri" size="14.0" />
                                     </font>
@@ -34,7 +34,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT">
                             <children>
-                                <Label prefWidth="150.0" text="Name" HBox.hgrow="ALWAYS">
+                                <Label fx:id="lblName" prefWidth="150.0" text="Name" HBox.hgrow="ALWAYS">
                                     <font>
                                         <Font name="Calibri" size="14.0" />
                                     </font>
@@ -48,7 +48,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0">
                             <children>
-                                <Label prefWidth="150.0" text="Quantity" HBox.hgrow="ALWAYS">
+                                <Label fx:id="lblQty" prefWidth="150.0" text="Quantity" HBox.hgrow="ALWAYS">
                                     <font>
                                         <Font name="Calibri" size="14.0" />
                                     </font>
@@ -62,7 +62,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="48.0">
                             <children>
-                                <Label prefWidth="150.0" text="Price" HBox.hgrow="ALWAYS">
+                                <Label fx:id="lblPrice" prefWidth="150.0" text="Price" HBox.hgrow="ALWAYS">
                                     <font>
                                         <Font name="Calibri" size="14.0" />
                                     </font>

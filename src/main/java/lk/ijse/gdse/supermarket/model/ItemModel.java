@@ -1,5 +1,6 @@
 package lk.ijse.gdse.supermarket.model;
 
+import lk.ijse.gdse.supermarket.dto.CustomerDto;
 import lk.ijse.gdse.supermarket.dto.ItemDto;
 import lk.ijse.gdse.supermarket.dto.OrderDetailsDto;
 import lk.ijse.gdse.supermarket.util.CrudUtil;
@@ -47,4 +48,42 @@ public class ItemModel {
                 orderDetailsDto.getItemId()      // Item ID
         );
     }
+    public ArrayList<ItemDto> getAllItem() throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.execute("select * from item");
+        ArrayList<ItemDto> itemDtos = new ArrayList<>();
+        while (rst.next()){
+            ItemDto itemDto =  new ItemDto(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getInt(3),
+                    rst.getDouble(4)
+                   );
+            itemDtos.add(itemDto);
+        }
+        return itemDtos;
+    }
+    public String getNextItemId() throws SQLException, ClassNotFoundException {
+//        Connection connection = DBConnection.getInstance().getConnection();
+//        String sql = "Select customer_id from customer order by customer_id desc limit 1";
+//        PreparedStatement pst = connection.prepareStatement(sql);
+
+//        ResultSet rst = pst.executeQuery();
+        ResultSet rst=CrudUtil.execute("select item_id from item order by item_id desc limit 1");
+        if(rst.next()){
+            String lastId = rst.getString(1); //COO1
+            String subString = lastId.substring(1); // 002
+            int i = Integer.parseInt(subString);//2
+            int newIdIndex = i+1;//3
+//            String newId = ; //C003
+            return String.format("0%03d",newIdIndex);
+        }
+        return  "0001";
+
+    }
+    public boolean saveItem(ItemDto itemDto) throws SQLException, ClassNotFoundException {
+        Boolean isSaved=CrudUtil.execute("insert into item values(?,?,?,?)", itemDto.getItemName(),itemDto.getItemName(),itemDto.getQuantity(),itemDto.getPrice());
+
+        return  isSaved;
+    }
+
 }

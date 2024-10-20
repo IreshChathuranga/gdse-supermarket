@@ -8,15 +8,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.gdse.supermarket.db.DBConnection;
 import lk.ijse.gdse.supermarket.dto.CustomerDto;
 import lk.ijse.gdse.supermarket.dto.tm.CustomerTM;
 import lk.ijse.gdse.supermarket.model.CustomerModel;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class CustomerController implements Initializable {
 
@@ -118,25 +123,63 @@ public class CustomerController implements Initializable {
         String email = txtEmail.getText();
         String phone = txtPhone.getText();
 
-        CustomerDto customerDto = new CustomerDto(
-                customerId,
-                name,
-                nic,
-                email,
-                phone
-        );
+        txtName.setStyle(txtName.getStyle() + ";-fx-border-color: #7367F0;");
+        txtNIC.setStyle(txtNIC.getStyle() + ";-fx-border-color: #7367F0;");
+        txtEmail.setStyle(txtEmail.getStyle() + ";-fx-border-color: #7367F0;");
+        txtPhone.setStyle(txtPhone.getStyle() + ";-fx-border-color: #7367F0;");
 
-        boolean isSaved  = customerModel.saveCustomer(customerDto);
-        if(isSaved){
-            loadNextCustomerId();
-            txtName.setText("");
-            txtNIC.setText("");
-            txtEmail.setText("");
-            txtPhone.setText("");
-            new Alert(Alert.AlertType.INFORMATION,"Customer Saved").show();
-        }else{
-            new Alert(Alert.AlertType.ERROR,"Save fail").show();
+        String namePattern = "^[A-Za-z ]+$";
+        String nicPattern = "^[0-9]{9}[vVxX]||[0-9]{12}$";
+        String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        String phonePattern = "^(\\d+)||((\\d+\\.)(\\d){2})$";
 
+        boolean isValidName = name.matches(namePattern);
+        boolean isValidNic = nic.matches(nicPattern);
+        boolean isValidEmail = email.matches(emailPattern);
+        boolean isValidPhone = phone.matches(phonePattern);
+
+        if (!isValidName) {
+            System.out.println(txtName.getStyle());
+            txtName.setStyle(txtName.getStyle() + ";-fx-border-color: red;");
+            System.out.println("Invalid name.............");
+//            return;
+        }
+
+        if (!isValidNic) {
+            txtNIC.setStyle(txtNIC.getStyle() + ";-fx-border-color: red;");
+//            return;
+        }
+
+        if (!isValidEmail) {
+            txtEmail.setStyle(txtEmail.getStyle() + ";-fx-border-color: red;");
+        }
+
+        if (!isValidPhone) {
+            txtPhone.setStyle(txtPhone.getStyle() + ";-fx-border-color: red;");
+        }
+
+        if (isValidName && isValidNic && isValidEmail && isValidPhone) {
+
+            CustomerDto customerDto = new CustomerDto(
+                    customerId,
+                    name,
+                    nic,
+                    email,
+                    phone
+            );
+
+            boolean isSaved = customerModel.saveCustomer(customerDto);
+            if (isSaved) {
+                loadNextCustomerId();
+                txtName.setText("");
+                txtNIC.setText("");
+                txtEmail.setText("");
+                txtPhone.setText("");
+                new Alert(Alert.AlertType.INFORMATION, "Customer Saved").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Save fail").show();
+
+            }
         }
     }
 
@@ -147,20 +190,57 @@ public class CustomerController implements Initializable {
         String email = txtEmail.getText();
         String phone = txtPhone.getText();
 
-        CustomerDto customerDTO = new CustomerDto(
-                customerId,
-                name,
-                nic,
-                email,
-                phone
-        );
+        txtName.setStyle(txtName.getStyle() + ";-fx-border-color: #7367F0;");
+        txtNIC.setStyle(txtNIC.getStyle() + ";-fx-border-color: #7367F0;");
+        txtEmail.setStyle(txtEmail.getStyle() + ";-fx-border-color: #7367F0;");
+        txtPhone.setStyle(txtPhone.getStyle() + ";-fx-border-color: #7367F0;");
 
-        boolean isUpdate = customerModel.updateCustomer(customerDTO);
-        if (isUpdate) {
-            refreshPage();
-            new Alert(Alert.AlertType.INFORMATION, "Customer update...!").show();
-        } else {
-            new Alert(Alert.AlertType.ERROR, "Fail to update customer...!").show();
+        String namePattern = "^[A-Za-z ]+$";
+        String nicPattern = "^[0-9]{9}[vVxX]||[0-9]{12}$";
+        String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        String phonePattern = "^(\\d+)||((\\d+\\.)(\\d){2})$";
+
+        boolean isValidName = name.matches(namePattern);
+        boolean isValidNic = nic.matches(nicPattern);
+        boolean isValidEmail = email.matches(emailPattern);
+        boolean isValidPhone = phone.matches(phonePattern);
+
+        if (!isValidName) {
+            System.out.println(txtName.getStyle());
+            txtName.setStyle(txtName.getStyle() + ";-fx-border-color: red;");
+            System.out.println("Invalid name.............");
+//            return;
+        }
+
+        if (!isValidNic) {
+            txtNIC.setStyle(txtNIC.getStyle() + ";-fx-border-color: red;");
+//            return;
+        }
+
+        if (!isValidEmail) {
+            txtEmail.setStyle(txtEmail.getStyle() + ";-fx-border-color: red;");
+        }
+
+        if (!isValidPhone) {
+            txtPhone.setStyle(txtPhone.getStyle() + ";-fx-border-color: red;");
+        }
+
+        if (isValidName && isValidNic && isValidEmail && isValidPhone) {
+            CustomerDto customerDTO = new CustomerDto(
+                    customerId,
+                    name,
+                    nic,
+                    email,
+                    phone
+            );
+
+            boolean isUpdate = customerModel.updateCustomer(customerDTO);
+            if (isUpdate) {
+                refreshPage();
+                new Alert(Alert.AlertType.INFORMATION, "Customer update...!").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Fail to update customer...!").show();
+            }
         }
     }
     
@@ -238,4 +318,32 @@ private void refreshPage() throws SQLException, ClassNotFoundException {
             btnUpdate.setDisable(false);
         }
     }
+
+    public void allReportOnAction(ActionEvent actionEvent) {
+        try {
+            JasperReport jasperReport = JasperCompileManager.compileReport(
+                    getClass()
+                            .getResourceAsStream("/report/Customer_report.jrxml"
+                            ));
+
+            Connection connection = DBConnection.getInstance().getConnection();
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(
+                    jasperReport,
+                    null,
+                    connection
+            );
+
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException e) {
+            new Alert(Alert.AlertType.ERROR, "Fail to generate report...!").show();
+//           e.printStackTrace();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "DB error...!").show();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+
+
